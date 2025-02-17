@@ -601,7 +601,7 @@ def update_product():
                                 elif harga == 0:
                                     print('Harga tidak bisa 0')
                                 elif difference_percentage >= 35:
-                                    konfirmasi_harga = confirmation_option(f'Terdapat perbedaan harga sebesar {price_difference} ({difference_percentage}%)\n Apakah ingin melanjutkan perubahan harga (Y/N)?')
+                                    konfirmasi_harga = confirmation_option(f'Terdapat perbedaan harga sebesar {price_difference} ({difference_percentage}%)\n Apakah ingin melanjutkan perubahan harga?')
                                     if  konfirmasi_harga == True:
                                         list_produk[indexing].update({f'price':harga})
                                         print(f'Produk {i['sku']} {i['item_name']} berhasil diupdate')
@@ -610,7 +610,14 @@ def update_product():
                                         print('Membatalkan update product')
                                         break   
                                 else:
-                                    break
+                                    konfirmasi_harga = confirmation_option(f'Lanjut untuk mengubah harga dari {i['price']} menjadi {harga}?')
+                                    if  konfirmasi_harga == True:
+                                        list_produk[indexing].update({f'price':harga})
+                                        print(f'Produk {i['sku']} {i['item_name']} berhasil diupdate')
+                                        break
+                                    else:
+                                        print('Membatalkan update product')
+                                        break   
                             except Exception as e:
                                 print('''=============== ERROR ===============\nTidak dapat memasukkan selain angka\n=============== ERROR ===============''')
                         break
