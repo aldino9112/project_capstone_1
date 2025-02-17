@@ -536,60 +536,106 @@ def update_product():
             cek_produk = True
             confirmation_result = confirmation_option(f'Apakah anda ingin mengupdate produk {i['sku']} {i['item_name']}?')
             if confirmation_result == True:
-                while True:
-                    nama = str(input("Masukkan nama produk: "))
-                    cek_nama = nama.replace(' ','')
-                    if cek_nama == '':
-                        print('Nama tidak boleh dikosongkan')
-                    else:
+                while True :
+                    pilih_kolom = str(input('Masukkan kolom yang ingin diubah: '))
+                    if(pilih_kolom.lower() == "nama"):
+                        while True:
+                            nama = str(input("Masukkan nama produk: "))
+                            cek_nama = nama.replace(' ','')
+                            if cek_nama == '':
+                                print('nama tidak boleh dikosongkan')
+                            else:
+                                cek_konfirmasi = confirmation_option(f'lanjut mengubah {list_produk[indexing]['item_name']} menjadi {nama}?')
+                                if cek_konfirmasi == True:
+                                    list_produk[indexing].update({f'item_name':nama})
+                                    print(f'Produk {i['sku']} {i['item_name']} berhasil diupdate')
+                                    break
+                                else :
+                                    print('Membatalkan update product')
+                                    break
                         break
-                while True:
-                    brand = str(input("Masukkan brand produk: "))
-                    cek_brand = brand.replace(' ','')
-                    if cek_brand == '':
-                        print('Brand tidak boleh dikosongkan')
-                    else:
+                    elif(pilih_kolom.lower() == "brand"):
+                        while True:
+                            brand = str(input("Masukkan brand produk: "))
+                            cek_brand = brand.replace(' ','')
+                            if cek_brand == '':
+                                print('brand tidak boleh dikosongkan')
+                            else:
+                                cek_konfirmasi = confirmation_option(f'lanjut mengubah {list_produk[indexing]['brand']} menjadi {brand}?')
+                                if cek_konfirmasi == True:
+                                    list_produk[indexing].update({f'brand':brand})
+                                    print(f'Produk {i['sku']} {i['item_name']} berhasil diupdate')
+                                    break
+                                else :
+                                    print('Membatalkan update product')
+                                    break
+                        break       
+                    elif(pilih_kolom.lower() == "kategori"):
+                        while True:
+                            kategori = str(input("Masukkan kategori produk: "))
+                            cek_kategori = kategori.replace(' ','')
+                            if cek_kategori == '':
+                                print('kategori tidak boleh dikosongkan')
+                            else:
+                                cek_konfirmasi = confirmation_option(f'lanjut mengubah {list_produk[indexing]['category']} menjadi {kategori}?')
+                                if cek_konfirmasi == True:
+                                    list_produk[indexing].update({f'category':kategori})
+                                    print(f'Produk {i['sku']} {i['item_name']} berhasil diupdate')
+                                    break
+                                else :
+                                    print('Membatalkan update product')
+                                    break
                         break
-                while True:
-                    kategori = str(input("Masukkan kategori produk: "))
-                    cek_kategori = kategori.replace(' ','')
-                    if cek_kategori == '':
-                        print('Kategori tidak boleh dikosongkan')
-                    else:
+                    elif(pilih_kolom.lower() == 'harga'):
+                        while True:
+                            try:
+                                harga = int(input("Masukkan harga produk: "))
+                                if harga > i['price']:
+                                    price_difference = abs(harga - i['price'])
+                                    difference_percentage = round(((harga - i['price']) / i['price']) *100 )
+                                elif harga < i['price']:
+                                    price_difference = abs(i['price'] - harga)
+                                    difference_percentage = round(((i['price'] - harga) / harga *100 ))
+                                if harga < 0:
+                                    print('Harga tidak bisa bersifat negatif')
+                                elif harga == 0:
+                                    print('Harga tidak bisa 0')
+                                elif difference_percentage >= 35:
+                                    konfirmasi_harga = confirmation_option(f'Terdapat perbedaan harga sebesar {price_difference} ({difference_percentage}%)\n Apakah ingin melanjutkan perubahan harga (Y/N)?')
+                                    if  konfirmasi_harga == True:
+                                        list_produk[indexing].update({f'price':harga})
+                                        print(f'Produk {i['sku']} {i['item_name']} berhasil diupdate')
+                                        break
+                                    else:
+                                        print('Membatalkan update product')
+                                        break   
+                                else:
+                                    break
+                            except Exception as e:
+                                print('''=============== ERROR ===============\nTidak dapat memasukkan selain angka\n=============== ERROR ===============''')
                         break
-                while True:
-                    try:
-                        harga = int(input("Masukkan harga produk: "))
-                        if harga > i['price']:
-                            price_difference = abs(harga - i['price'])
-                            difference_percentage = round(((harga - i['price']) / i['price']) *100 )
-                        elif harga < i['price']:
-                            price_difference = abs(i['price'] - harga)
-                            difference_percentage = round(((i['price'] - harga) / harga *100 ))
-                        if harga < 0:
-                            print('Harga tidak bisa bersifat negatif')
-                        elif harga == 0:
-                            print('Harga tidak bisa 0')
-                        elif difference_percentage >= 35:
-                            konfirmasi_harga = confirmation_option(f'Terdapat perbedaan harga sebesar {price_difference} ({difference_percentage}%)\n Apakah ingin melanjutkan perubahan harga (Y/N)?')
-                            if  konfirmasi_harga == True:
+                    elif(pilih_kolom.lower() == 'stock'):
+                        while True:
+                            try:
+                                stock = int(input("Masukkan stock produk: "))
+                                if stock < 0:
+                                    print('Stock tidak bisa bersifat negatif')
+                                else:
+                                    cek_konfirmasi = confirmation_option(f'lanjut mengubah {list_produk[indexing]['stock']} menjadi {stock}?')
+                                    if cek_konfirmasi == True:
+                                        list_produk[indexing].update({f'stock':stock})
+                                        print(f'Produk {i['sku']} {i['item_name']} berhasil diupdate')
+                                        break
+                                    else :
+                                        print('Membatalkan update product')
+                                        break
                                 break
-                        else:
-                            break
-                    except Exception as e:
-                        print('''=============== ERROR ===============\nTidak dapat memasukkan selain angka\n=============== ERROR ===============''')
-                while True:
-                    try:
-                        stock = int(input("Masukkan stock produk: "))
-                        if stock < 0:
-                            print('Stock tidak bisa bersifat negatif')
-                        else:
-                            break
-                    except Exception as e:
-                        print('''=============== ERROR ===============\nStock hanya dapat berupa angka\n=============== ERROR ===============''')
-                list_produk[indexing].update({f'item_name':nama, f'brand': brand, f'category': kategori, f'price': harga, f'stock': stock})
-                print(f'Produk {i['sku']} {i['item_name']} berhasil diudpate')
-                indexing += 1
+                            except Exception as e:
+                                print('''=============== ERROR ===============\nStock hanya dapat berupa angka\n=============== ERROR ===============''')
+                        break
+                    else:
+                        print('Kolom tidak tersedia\nList kolom : nama, brand, kategori, harga, stock')
+            indexing += 1
         else:
             indexing += 1
     if  cek_produk == False:
